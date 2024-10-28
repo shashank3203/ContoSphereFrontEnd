@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Added Successfully</title>
+  <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #000000, #414547);
+        color: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        animation: fadeIn 0.7s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    #modalContainer {
+        background: rgba(30, 30, 30, 0.9);
+        padding: 3em;
+        border-radius: 15px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        width: 80%;
+        max-width: 500px;
+        text-align: center;
+        animation: zoomIn 0.7s;
+        transform: translateY(-20px);
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.8) translateY(-20px); opacity: 0; }
+        to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    h2 {
+        margin-bottom: 1em;
+        color: #FFD700;
+        font-size: 2em;
+        animation: bounce 0.6s infinite alternate;
+    }
+
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-10px); }
+    }
+
+    p {
+        margin-bottom: 2em;
+        font-size: 18px;
+        transition: transform 0.3s;
+    }
+
+    p:hover {
+        transform: scale(1.05);
+    }
+
+    .btn-custom {
+        margin: 0.5em;
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-4px);
+        background-color: #00FF7F; /* Custom hover color */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="modalContainer">
+  <h2>Contact Added Successfully!</h2>
+  <p>Your contact has been successfully added to the database.</p>
+  <div>
+    <a href="/user/contact/addcontactform" class="btn btn-success btn-custom">Add More</a>
+    <a href="/user/contact/viewcontacts" class="btn btn-info btn-custom">View Contacts</a>
+    <a href="/user/dashboard" class="btn btn-primary btn-custom">Go to Dashboard</a>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="usernavbar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Navbar</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1D1D1D; /* Dark background */
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand {
+            color: #fff; /* White text */
+            font-size: 1.8em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand img {
+            width: 40px; /* Brand icon size */
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .brand a {
+            color: #fff; /* Default color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s ease; /* Smooth transition */
+        }
+
+        .brand a:hover {
+            color: #175F66; /* Hover color */
+        }
+
+        .username {
+            display: flex;
+            align-items: center;
+            color: #fff; /* White text */
+            font-size: 1.2em;
+            margin: 0 15px;
+        }
+
+        .username img {
+            width: 40px; /* Profile picture size */
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .menu-icon {
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: #fff; /* Hamburger color */
+            font-size: 2.5em; /* Larger icon */
+            position: relative;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .menu-icon:hover {
+            color: #005a5e; /* Darker on hover */
+        }
+
+        .dropdown {
+            display: none;
+            position: fixed; /* Fixed position */
+            right: 0;
+            top: 0; /* Starts from the top */
+            height: 100vh; /* Fills the height */
+            width: 300px; /* Fixed width */
+            background-color: rgba(29, 29, 29, 0.9); /* Dark background with transparency */
+            z-index: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+        }
+
+        .dropdown.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            padding: 20px; /* Larger items */
+            display: block;
+            color: #fff; /* White text */
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1.1em;
+            position: relative; /* For ripple effect */
+        }
+
+        .dropdown a:hover {
+            background-color: #11585F; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        /* Ripple effect styles */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Add some space around the dropdown items */
+        .dropdown a + a {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <script src="http://localhost:35729/livereload.js"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="brand">
+        <img th:src="@{/images/phonescm.png}" alt="Brand Icon">
+        <a th:href="@{/contosphere/}">ContoSphere</a>
+    </div>
+    <div class="menu-icon" onmouseover="showDropdown()" onmouseout="hideDropdown()">&#9776;</div>
+    <div class="dropdown" id="dropdownMenu" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+        <a th:href="@{/user/profile}">My Profile</a>
+        <a th:href="@{/contosphere/}">Home</a>
+        <a th:href="@{/contosphere/about}">About</a>
+        <a th:href="@{/contosphere/contact}">Contact</a>
+        <a th:href="@{/user/settings}">Settings</a>
+        <a th:href="@{/contosphere/services}">Services</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+
+<script>
+    function showDropdown() {
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.classList.add('show');
+    }
+
+    function hideDropdown() {
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.classList.remove('show');
+    }
+
+    // Close dropdown if clicked outside
+    window.onclick = function(event) {
+        if (!event.target.matches('.menu-icon') && !event.target.closest('.dropdown')) {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.remove('show');
+        }
+    }
+
+    // Ripple effect
+    document.querySelectorAll('.dropdown a').forEach(item => {
+        item.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+            ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+
+    // Ripple effect for the menu icon
+    const menuIcon = document.querySelector('.menu-icon');
+    menuIcon.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        this.appendChild(ripple);
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+        ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    });
+</script>
+</body>
+</html>

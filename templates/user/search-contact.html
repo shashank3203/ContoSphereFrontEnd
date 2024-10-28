@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Result</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #212529; /* Dark background */
+            color: #f8f9fa; /* Light text color */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            margin-top: 1rem; /* mt-1 class */
+            opacity: 0; /* Start hidden */
+            transform: translateY(20px); /* Start below */
+            animation: fadeIn 0.5s forwards; /* Fade in effect */
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0); /* Move to original position */
+            }
+        }
+
+        .container:hover {
+            transform: scale(1.02); /* Slight zoom effect on hover */
+        }
+
+        h2 {
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            font-size: 2rem;
+        }
+
+        /* Search Bar Container */
+        h2 .search-bar-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            transition: width 0.3s ease-in-out;
+            display: flex; /* Align input and button in a row */
+        }
+
+        h2:hover .search-bar-container {
+            width: 60%;
+        }
+
+        /* Search Input Field */
+        .search-bar-container input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 30px 0 0 30px; /* Rounded corners on the left */
+            border: 1px solid #495057;
+            background-color: #343a40;
+            color: #f8f9fa;
+            font-size: 14px;
+            line-height: 1.9; /* Adjust line-height for height reduction */
+            transition: all 0.3s ease;
+        }
+
+        .search-bar-container input:focus {
+            outline: none;
+            border-color: #FEC106; /* Yellow border on focus */
+            box-shadow: 0 0 5px rgba(23, 95, 102, 0.7); /* Glowing green effect */
+        }
+
+        .search-bar-container input::placeholder {
+            color: #b0b3b8; /* Light placeholder color */
+            font-style: italic;
+        }
+
+        /* Search Button Styling */
+        .btn-search {
+            background-color: #175F66; /* Yellow background for the search button */
+            color: white; /* White text color */
+            border: none; /* No border */
+            border-radius: 0 30px 30px 0; /* Rounded corners on the right */
+            padding: 10px 15px; /* Padding for the button */
+            margin-left: -15px; /* Overlap slightly with the input */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px;
+            height: auto;
+            line-height: 1.9;
+            width: 80px; /* Set fixed width for the button */
+            transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+        }
+
+        .btn-search:hover {
+            background-color: #FEC106; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        /* Table Styling */
+        .table {
+            background-color: #343a40; /* Dark table background */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .table th {
+            background-color: #495057; /* Header background */
+            color: #ffffff;
+            transition: background-color 0.3s, transform 0.3s; /* Transition for header */
+        }
+
+        .table tbody tr {
+            background-color: #343a40; /* Dark background for table rows */
+            color: #f8f9fa; /* Light text color for readability */
+            transition: transform 0.3s, background-color 0.3s; /* Row transition */
+        }
+
+        .table tbody tr:hover {
+            transform: translateX(10px); /* Slide effect on hover */
+            background: linear-gradient(90deg, #495057, #6c757d); /* Gradient background on hover */
+            box-shadow: 0 0 10px #FEC106; /* Glowing effect */
+            cursor: pointer;
+        }
+
+        .contact-image {
+            border-radius: 50%; /* Circle shape */
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            transition: transform 0.3s, box-shadow 0.3s; /* Animation for images */
+        }
+
+        .contact-image:hover {
+            transform: scale(1.1); /* Zoom effect on image hover */
+            box-shadow: 0 0 15px rgba(255, 87, 51, 0.5); /* Shadow on hover */
+        }
+
+        .description {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #b0b3b8; /* Slightly lighter text for description */
+        }
+
+        @media (max-width: 768px) {
+            .description {
+                max-width: none;
+                white-space: normal;
+            }
+        }
+
+        /* Button Styling */
+        .btn-success {
+         background-color: #175F66 !important;
+         border: none;
+        }
+        .btn-custom {
+            margin: 0.5em;
+            width: 10%;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-4px);
+            background-color: #FEC106 !important; /* Custom hover color */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+
+
+        /* Pagination Styling */
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 8px; /* Reduced gap between page numbers */
+        }
+
+        .pagination .page-item {
+            padding-left: 0;
+            margin: 0;
+            transition: transform 0.3s ease; /* Added transform effect on hover */
+        }
+
+        .pagination .page-link {
+            background-color: transparent; /* Default background */
+            color: #f8f9fa; /* Text color before hover */
+            border: 1px solid transparent; /* No border by default */
+            padding: 0.25em 0.5em;
+            border-radius: 50%; /* Circular border radius */
+            font-weight: bold; /* Bold text */
+            width: 30px; /* Decreased width */
+            height: 30px; /* Decreased height */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center content inside the circle */
+            transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s; /* Add transform transition for hover */
+        }
+
+        .pagination .page-link:hover {
+            background-color: #FEC106; /* Hover background color */
+            color: white; /* Text color on hover */
+            transform: scale(1.2); /* Slight zoom effect on hover */
+            box-shadow: 0 0 10px rgba(88, 88, 1, 0.7);; /* Shadow effect for hover */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #175F66; /* Active background color */
+            color: white; /* Active text color */
+            border: none; /* Remove border on active item */
+            transform: scale(1.3); /* Scale effect for active item */
+            box-shadow: 0 0 15px rgba(2, 24, 58, 0.7); /* Glowing shadow for active page */
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d; /* Greyed out text for disabled links */
+            pointer-events: none; /* Disable clicks on disabled pages */
+        }
+
+        .pagination .page-link:not(.active):hover {
+            transform: translateY(-4px); /* Lift effect on hover for non-active items */
+        }
+
+        /* Icons for previous and next buttons */
+        .pagination .page-link-prev,
+        .pagination .page-link-next {
+            font-size: 1.2rem; /* Slightly larger icons */
+            padding: 0.5em; /* Padding for icons */
+        }
+
+        /* Custom animation for pagination links */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .pagination .page-item:hover .page-link {
+            animation: pop 0.5s ease-in-out;
+        }
+                .red-icon {
+            color: red;
+            transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition for color and transform */
+        }
+
+        .red-icon:hover {
+            color: darkred; /* Change to a darker shade on hover */
+            transform: scale(1.2) rotate(10deg) translateY(-5px); /* Scale, rotate, and slightly move up */
+            animation: bounce 0.5s; /* Add bounce animation */
+        }
+
+        .blue-icon {
+            color: blue;
+            transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition for color and transform */
+        }
+
+        .blue-icon:hover {
+            color: darkblue; /* Change to a darker shade on hover */
+            transform: scale(1.2) rotate(-10deg) translateY(-5px); /* Scale, rotate, and slightly move up */
+            animation: bounce 0.5s; /* Add bounce animation */
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0; /* Start invisible */
+                transform: translateY(10px); /* Start slightly below */
+            }
+            100% {
+                opacity: 1; /* Fully visible */
+                transform: translateY(0); /* Original position */
+            }
+        }
+
+    </style>
+    <script>
+        function viewContactDetails(contactId) {
+    window.location.href = '/user/contact/findcontact?contactId=' + contactId;
+}
+    </script>
+</head>
+<body>
+<div th:replace="~{base :: parent(~{:: #content}, ~{:: title}, ~{:: script})}">
+    <div id="content" class="container mt-1">
+        <h2>
+            <span>Contact List</span>
+            <form th:action="@{/user/contact/search}" method="get">
+                <div class="search-bar-container">
+                    <input name="keyword" type="text" placeholder="Search Contacts..." id="searchInput" th:value="${keyword}" />
+                    <button type="submit" class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i> </button>
+                </div>
+            </form>
+            <a href="/user/contact/viewcontacts" class="btn btn-success btn-custom">Back to List</a>
+        </h2>
+        <hr style="border: 1px solid #FFFFFF;">
+        <div style="text-align: center;">
+            <span style="font-size: 1.5em;">
+                Search Result for - <span th:text="${keyword}"></span>
+                <span th:text="' (' + ${pageContact.totalElements} + ' results found)'" style="font-size: 14px;"></span>
+            </span>
+        </div>
+        <hr style="border: 1px solid #FFFFFF;">
+        <table th:if="${pageContact.totalElements>0}" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contact : ${pageContact}">
+                <td>
+                    <a th:onclick="|viewContactDetails(${contact.id})|" style="text-decoration: none; color: inherit;">
+                        <img onerror="this.src='https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1729231684~exp=1729235284~hmac=816299b83f8e06dd07279749419bd0698bd02320c768f50d1d458301e42fe558&w=740'"
+                             th:src="${contact.picture}" alt="Contact Picture" class="contact-image" />
+                    </a>
+                </td>
+                <td>
+                    <a th:onclick="|viewContactDetails(${contact.id})|" style="text-decoration: none; color: inherit;" th:text="${contact.name}"></a>
+                </td>
+                <td>
+                    <a th:onclick="|viewContactDetails(${contact.id})|" style="text-decoration: none; color: inherit;" th:text="${contact.email}"></a>
+                </td>
+                <td>
+                    <a th:onclick="|viewContactDetails(${contact.id})|" style="text-decoration: none; color: inherit;" th:text="${contact.phoneNumber}"></a>
+                </td>
+                <td class="description">
+                    <a th:onclick="|viewContactDetails(${contact.id})|" style="text-decoration: none; color: inherit;" th:text="${contact.description}"></a>
+                </td>
+                <td>
+                    <a th:onclick="deleteContact([[${contact.id}]])" style="text-decoration: none; color: inherit;">
+                        <i class="fa-solid fa-trash red-icon"></i>
+                    </a>
+                    <a th:onclick="loadContactData([[${contact.id}]])" style="text-decoration: none; color: inherit; padding-left: 15px;">
+                        <i class="fa-solid fa-eye blue-icon"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:replace="~{user/contact-modal :: contact}"></div>
+        <h1 th:if="${pageContact.totalElements == 0}" class="text-center">🤔 No Result Found</h1>
+    </div>
+</div>
+
+<script th:src="@{/js/contacts.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGz4FYj2SJe5UpusFylPJnKeOpzW1gl72RcvfiLNQ/lpB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-QF82uVjE6qJbKxoBBGC/24PYS1QfQVAYGpC8fF2Y3cXyj9GICpqFNpZT/6ChR9p8" crossorigin="anonymous"></script>
+</body>
+</html>

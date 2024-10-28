@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Contact</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            padding: 2em;
+            width: 80%;
+            max-width: 1000px;
+            position: relative;
+            overflow-y: auto; /* Allow vertical scrolling */
+            max-height: 90vh; /* Limit the maximum height */
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: transform 0.3s;
+        }
+
+        .logo-section img {
+            width: 40px;
+            margin-right: 10px;
+            transition: transform 0.3s;
+        }
+
+        .logo-section h1 {
+            font-size: 24px;
+            color: #FFD700;
+            margin: 0;
+            transition: color 0.3s;
+        }
+
+        .logo-section a {
+            font-size: 24px;
+            color: #FFD700;
+            text-decoration: none;
+            transition: color 0.3s, transform 0.3s;
+            font-weight: 600;
+        }
+
+        .logo-section a:hover {
+            color: #175F66;
+            transform: translateY(-3px);
+        }
+
+        #formContainer {
+            padding-left: 5em;
+        }
+
+        h2 {
+            padding-top: 150px;
+            color: #FFD700;
+            margin-bottom: 1em;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+            font-weight: 400;
+            color: #ddd;
+        }
+
+        input, textarea {
+            padding: 12px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+            font-size: 14px;
+            background-color: #2a2a2a;
+            color: #fff;
+            width: 100%;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #175F66;
+            outline: none;
+            box-shadow: 0 0 8px #175F66;
+            transform: scale(1.02);
+        }
+
+        button {
+            padding: 12px;
+            background: #175F66;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background: #00FF7F;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .back-button {
+            background: #FFD700;
+            position: absolute;
+            bottom: 2em;
+            left: 2em;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .back-button:hover {
+            background: #175F66;
+            transform: translateY(-2px);
+        }
+
+        .validation {
+            color: #F60C00; /* Red color for the error message */
+            background-color: rgba(246, 12, 0, 0.1); /* Light red background */
+            border: 1px solid #F60C00; /* Solid border */
+            border-radius: 8px; /* Rounded corners */
+            padding: 10px; /* Padding for spacing */
+            margin-top: 5px; /* Space above the message */
+            display: flex; /* Flex display for icon alignment */
+            align-items: center; /* Center icon and text vertically */
+            font-weight: 500; /* Slightly bolder text */
+            font-style: italic;
+            transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+        }
+
+        .validation i {
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+        #formContainer {
+            max-height: 80vh; /* Set maximum height for form container */
+            overflow-y: scroll; /* Allow scrolling */
+            scrollbar-width: none; /* For Firefox */
+        }
+
+        #formContainer::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <div class="logo-section">
+        <span>
+            <img th:src="@{/images/phonescm.png}" alt="Logo"> <!-- Replace with your logo -->
+            <a th:href="@{/contosphere/}">ContoSphere</a>
+        </span>
+        <h2 style="margin-top: 2em;">Add a Contact</h2>
+    </div>
+    <div id="formContainer">
+        <form id="contactForm" th:action="@{/user/contact/processcontact}" th:object="${contactForm}" method="POST" enctype="multipart/form-data" novalidate>
+            <label for="name">Name</label>
+            <input th:field="*{name}" type="text" id="name" name="name" placeholder="Enter name">
+            <div th:if="${#fields.hasErrors('name')}" class="error-message validation italic" th:errors="*{name}">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <label for="email">Email</label>
+            <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter email">
+            <div th:if="${#fields.hasErrors('email')}" class="error-message validation italic" th:errors="*{email}">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <label for="phonenumber">Phone Number</label>
+            <input th:field="*{phoneNumber}" type="tel" id="phonenumber" name="phonenumber" placeholder="Enter phone number">
+            <div th:if="${#fields.hasErrors('phoneNumber')}" class="error-message validation italic" th:errors="*{phoneNumber}">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <label for="address">Address</label>
+            <input th:field="*{address}" type="text" id="address" name="address" placeholder="Enter address">
+            <div th:if="${#fields.hasErrors('address')}" class="error-message validation italic" th:errors="*{address}">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <label for="contactImage">Picture</label>
+            <input th:field="*{contactImage}" type="file" id="contactImage" name="contactImage" accept="image/*">
+            <div th:if="${#fields.hasErrors('contactImage')}" class="error-message validation italic">
+                <span th:errors="*{contactImage}"></span> <!-- Display error message -->
+            </div>
+            <label for="description">Description</label>
+            <textarea th:field="*{description}" id="description" name="description" placeholder="Enter a brief description" rows="4" required></textarea>
+            <div th:if="${#fields.hasErrors('description')}" class="error-message validation italic" th:errors="*{description}">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <button type="submit">Add Contact</button>
+        </form>
+        <button class="back-button" onclick="window.history.back();">Back</button>
+    </div>
+</div>
+
+<script>
+    // Optional: Close modal on clicking outside of it
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('successModal')) {
+            closeModal();
+        }
+    }
+</script>
+</body>
+</html>

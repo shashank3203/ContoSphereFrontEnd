@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="contact">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Theme Popup Modal</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Hide scrollbar */
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6200ea;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-button:hover {
+            background-color: #3700b3;
+        }
+
+        .my-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: fixed; /* Change to fixed */
+            top: 210px; /* Align to top */
+            left: 25%; /* Center horizontally */
+            transform: translate(-50%, 0); /* Adjust transform */
+            animation: scaleIn 0.5s forwards; /* Apply scaling animation */
+        }
+
+
+        .close {
+            color: #aaa;
+            float: right;
+            padding-left: 420px;
+            font-size: 28px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes scaleIn {
+            from { transform: translateY(-50%) scale(0); opacity: 0; }
+            to { transform: translateY(-50%) scale(1); opacity: 1; }
+        }
+        .contact-header {
+            display: flex; /* Use flexbox to align items */
+            align-items: center; /* Center items vertically */
+            margin: 20px 0; /* Add some vertical spacing */
+}
+         #contact_image {
+            display: block; /* Ensure the image is block-level */
+            margin: 20px; /* Center the image with margin below */
+            max-width: 60%; /* Responsive image */
+            height: 50px; /* Maintain aspect ratio */
+            border-radius: 50%; /* Make the image circular */
+            object-fit: cover; /* Ensure the image covers the circle without distortion */
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="myModal" class="my-modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="contact-header">
+            <a><img id="contact_image" src="" alt="Contact Image" onerror="this.src='https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1729231684~exp=1729235284~hmac=816299b83f8e06dd07279749419bd0698bd02320c768f50d1d458301e42fe558&w=740'"/></a>
+            <h4 id="contact_name"></h4>
+        </div>
+        <h5>Details:</h5>
+        <div id="copyMessage" style="display: none; color: #fffffff; position: absolute; top: 170px; right: 10px;">
+            Copied!
+        </div>
+        <ul>
+            <li class="copyable" id="contact_email"></li>
+            <li class="copyable" id="contact_phone"></li>
+            <li id="contact_description"></li>
+            <li id="contact_address"></li>
+        </ul>
+    </div>
+</div>
+<script th:src="@{/js/contacts.js}"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="header">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 70px; /* Adjust as necessary */
+            margin: 0; /* Remove default margins */
+            overflow-x: hidden; /* Only hide horizontal overflow if needed */
+            }
+        /* General styles for the navbar */
+        .navbar {
+            background-color: transparent; /* Dark background for the navbar */
+            position: fixed; /* Fix the navbar at the top */
+            top: 0; /* Position it at the top */
+            left: 0; /* Align to the left */
+            right: 0; /* Align to the right */
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        /* Default link color */
+        .navbar-nav .nav-link, .navbar-brand {
+            color: #FEC106; /* Yellow color for links and brand name */
+            transition: color 0.3s, background-color 0.3s; /* Smooth transition for color and background */
+        }
+
+
+        /* Hover effect for links */
+        .navbar-nav .nav-link:hover, .navbar-brand:hover {
+            color: #00bfff; /* Light blue color on hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Subtle background color on hover */
+            border-radius: 5px; /* Rounded corners for hover effect */
+        }
+
+        /* Active link color */
+        .navbar-nav .nav-link.active {
+            color: #00bfff; /* Light blue color for active link */
+            font-weight: bold; /* Bold text for active link */
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem; /* Larger text for the brand */
+            font-weight: bold; /* Bold text for the brand */
+            padding-left: 20px; /* Padding before the brand name */
+        }
+
+        .navbar-brand img {
+            height: 40px; /* Set the height of the image */
+            margin-right: 10px; /* Margin between the image and the brand name */
+        }
+
+        .btn-get-started {
+            background-color: #FEC106; /* Yellow background for the button */
+            color: #fff; /* White text color */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners for the button */
+            padding: 10px 20px; /* Padding for the button */
+            font-size: 16px; /* Font size */
+        }
+
+        .btn-get-started:hover {
+            background-color: #00bfff; /*  blue on hover */
+            color: #000000; /* Black text color on hover */
+            text-decoration: none; /* Remove underline on hover */
+        }
+
+        .navbar-nav-container {
+            margin-right: 20px; /* Adjust this value to increase/decrease space */
+        }
+
+        /* Add padding-top to body content to account for fixed navbar height */
+        body {
+            padding-top: 70px; /* Adjust this value based on the height of the navbar */
+        }
+
+        /* Responsive styles for mobile view */
+        @media (max-width: 767.98px) {
+            .navbar-collapse {
+                background-color: #343a40; /* Ensure the background is dark in mobile view */
+            }
+
+            .navbar-nav .nav-link {
+                padding: 10px 15px; /* Increase padding for touch-friendly links on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--if we want to add dark theme add "navbar-dark bg-dark"-->
+<nav class="navbar navbar-expand-lg" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+    <a class="navbar-brand" th:href="@{/contosphere/}">
+        <img th:src="@{/images/phonescm.png}" alt="Brand Logo"> <!-- Replace with your logo URL -->
+        ContoSphere
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" th:href="@{/contosphere/}" th:classappend="${activePage == 'home' ? ' active' : ''}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/contosphere/services}" th:classappend="${activePage == 'services' ? ' active' : ''}">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/contosphere/about}" th:classappend="${activePage == 'about' ? ' active' : ''}">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/contosphere/contact}" th:classappend="${activePage == 'contact' ? ' active' : ''}">Contact</a>
+            </li>
+        </ul>
+        <div class="navbar-nav-container">
+            <a class="btn btn-get-started" href="/contosphere/login">Login</a>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

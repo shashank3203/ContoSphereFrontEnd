@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212; /* Dark background for the entire page */
+            color: #ffffff; /* Light text color */
+        }
+        .height-100 {
+            height: 100vh;
+        }
+        .card {
+            width: 400px;
+            background-color: #1e1e1e; /* Darker card background */
+            border: none;
+            box-shadow: 0px 5px 20px rgba(210, 218, 227, 0.2);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card h6 {
+            color: #00bcd4; /* Light blue for heading */
+            font-size: 20px;
+        }
+        .inputs input {
+            width: 40px;
+            height: 40px;
+            background-color: #2a2a2a; /* Darker input background */
+            color: #ffffff; /* White text color in inputs */
+            border: 1px solid #444; /* Dark border */
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border: 2px solid #00bcd4; /* Change border color on focus */
+        }
+        .validate {
+            border-radius: 20px;
+            height: 40px;
+            background-color: #00bcd4; /* Button background color */
+            border: 1px solid #00bcd4;
+            width: 140px;
+            color: white; /* Button text color */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+        .validate:hover {
+            background-color: #0097a7; /* Darker shade on hover */
+            border: 1px solid #0097a7; /* Change border color on hover */
+        }
+        .error-message {
+            color: #ff5252; /* Red error message color */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container height-100 d-flex justify-content-center align-items-center">
+    <div class="position-relative">
+        <div class="card text-center">
+            <h6>Please enter the one-time password <br> to verify your account</h6>
+            <div>
+                <span>A code has been sent to your email id</span>
+            </div>
+            <form th:action="@{/verify-otp}" method="POST">
+                <input type="hidden" name="email" th:value="${email}">
+                <input type="hidden" name="otp" id="otp-value"> <!-- Hidden input for the concatenated OTP -->
+                <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                    <input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="1" required />
+                    <input class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" required />
+                    <input class="m-2 text-center form-control rounded" type="text" id="third" maxlength="1" required />
+                    <input class="m-2 text-center form-control rounded" type="text" id="fourth" maxlength="1" required />
+                    <input class="m-2 text-center form-control rounded" type="text" id="fifth" maxlength="1" required />
+                    <input class="m-2 text-center form-control rounded" type="text" id="sixth" maxlength="1" required />
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn validate">Validate</button>
+                </div>
+            </form>
+            <div th:if="${error}" class="error-message">[[${error}]]</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll('#otp > input');
+        const otpValue = document.getElementById('otp-value');
+
+        inputs.forEach((input, i) => {
+            input.addEventListener('input', function() {
+                // Update hidden input with concatenated values
+                otpValue.value = Array.from(inputs).map(input => input.value).join('');
+
+                // Move to the next input if current is filled
+                if (input.value.length >= input.maxLength && i < inputs.length - 1) {
+                    inputs[i + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', function(event) {
+                if (event.key === "Backspace" && input.value === '') {
+                    if (i > 0) {
+                        inputs[i - 1].focus();
+                    }
+                } else if (event.key.length === 1 && i < inputs.length - 1) {
+                    // Automatically move to next input on entering a value
+                    if (input.value.length >= input.maxLength) {
+                        inputs[i + 1].focus();
+                    }
+                }
+            });
+        });
+
+        // Focus on the first input on page load
+        inputs[0].focus();
+    });
+</script>
+</body>
+</html>

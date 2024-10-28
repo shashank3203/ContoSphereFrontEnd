@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="parent(content, title, script)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}">Base Page</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html, body {
+            height: 100%; /* Full height for body */
+            margin: 0; /* Remove default margin */
+        }
+
+        .dark-theme {
+            background-color: #1D1D1D; /* Dark background */
+            color: #ffffff; /* Light text color */
+        }
+
+        /* Add padding to the body or specific section */
+        .main-content {
+            padding: 20px; /* Adjust as needed */
+            overflow-y: auto; /* Allow vertical scrolling */
+            max-height: calc(100vh - 80px); /* Adjust height to allow scrolling */
+        }
+
+        .dark-theme h1, .dark-theme h2, .dark-theme p {
+            color: #ffffff; /* Ensure text inside is white */
+        }
+
+        .dark-theme a {
+            color: #fff; /* Light purple for links */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .main-content::-webkit-scrollbar {
+            display: none; /* Hide scrollbar */
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .main-content {
+            -ms-overflow-style: none; /* Internet Explorer and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+    </style>
+</head>
+
+<body class="dark-theme">
+
+<!-- If user is logged in -->
+<div th:if="${loggedInUser}">
+    <div th:replace="~{user/user-navbar :: usernavbar}"></div>
+</div>
+
+<div th:if="${loggedInUser}">
+    <div th:replace="~{user/sidebar :: sidebar}"></div>
+</div>
+
+<!-- If user is not logged in -->
+<div th:unless="${loggedInUser}">
+    <div th:replace="~{navbar :: header}"></div>
+</div>
+
+<!-- Main content section with added class for padding -->
+<div class="main-content" style="padding-left: 30px; padding-right: 30px;">
+<section th:replace="${content}"></section>
+</div>
+<th:block th:replace="${script}"></th:block>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

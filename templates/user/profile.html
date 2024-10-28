@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: parent(~{:: #content}, ~{:: title}, ~{:: script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${loggedInUser.userName}+' Profile'">Profile</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+</head>
+<body>
+<div id="content">
+    <h1>This is Profile Page</h1>
+
+    <p class="lead">
+Welcome to the Profile Page
+    </p>
+</div>
+<script>
+    console.log("About Page")
+</script>
+</body>
+</html>
+

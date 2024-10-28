@@ -1,0 +1,4 @@
+{
+  "proxy": "localhost:8080",
+  "files": ["src/main/resources/templates/*.html"]
+}

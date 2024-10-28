@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+<div class="login-container">
+    <a th:href="@{/contosphere/}" class="brand">
+        <img src="/images/phonescm.png" alt="Brand Logo" class="brand-logo">
+        <span class="brand-name">Contosphere</span>
+    </a>
+
+    <h2 class="login-heading">Signup</h2>
+
+    <form th:action="@{/contosphere/register}" method="post" th:object="${userForm}" class="signup-form" novalidate>
+        <input type="text" name="name" th:field="*{userName}" placeholder="Name" class="input-field" required>
+        <div th:if="${#fields.hasErrors('userName')}" class="error-message validation italic" th:errors="*{userName}">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <input type="email" name="email" th:field="*{email}" placeholder="Email" class="input-field" required>
+        <div th:if="${#fields.hasErrors('email')}" class="error-message validation italic" th:errors="*{email}">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <input type="text" name="phonenumber" th:field="*{phoneNumber}" placeholder="Phone Number" class="input-field" required>
+        <div th:if="${#fields.hasErrors('phoneNumber')}" class="error-message validation italic" th:errors="*{phoneNumber}">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <input type="password" name="password" th:field="*{password}" placeholder="Password" class="input-field" required>
+        <div th:if="${#fields.hasErrors('password')}" class="error-message validation italic" th:errors="*{password}">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <input type="password" name="confirm-password" th:field="*{confirmPassword}" placeholder="Confirm Password" class="input-field" required>
+        <div th:if="${#fields.hasErrors('confirmPassword')}" class="error-message validation italic" th:errors="*{confirmPassword}">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div th:if="${#fields.hasErrors('passwordMatching')}" class="error-message validation italic" th:errors="*{passwordMatching}">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <button type="submit" class="signup-button">Sign Up</button>
+    </form>
+
+    <div class="social-login">
+        <span>Sign up via:</span>
+        <div class="social-icons">
+            <a th:href="@{/oauth2/authorization/google}" class="social-icon google"></a>
+            <a th:href="@{/oauth2/authorization/facebook}" class="social-icon facebook"></a>
+            <a th:href="@{/oauth2/authorization/github}" class="social-icon github"></a>
+        </div>
+    </div>
+
+    <a th:href="@{/contosphere/login}" class="login-link">Already have an account? Log in</a>
+</div>
+
+</body>
+</html>

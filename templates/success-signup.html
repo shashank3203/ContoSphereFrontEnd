@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a; /* Dark background */
+            color: #f0f0f0; /* Light text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: fadeIn 1s ease; /* Fade in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .container {
+            text-align: center;
+            background: #2a2a2a; /* Darker card background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+            animation: slideIn 0.5s ease; /* Slide-in animation */
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .container:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        h1 {
+            color: #FEC106; /* Gold color */
+            margin-bottom: 10px;
+            animation: bounce 1s infinite; /* Bouncing animation */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        p {
+            color: #ddd; /* Lighter gray for text */
+            margin-bottom: 20px;
+        }
+
+        .explore-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #FEC106; /* Button color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent; /* Border for effect */
+        }
+
+        .explore-button:hover {
+            background-color: blue; /* Hover effect */
+            border-color: blue; /* Border color on hover */
+            transform: translateY(-3px); /* Lift effect */
+        }
+
+        .explore-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 0;
+        }
+
+        .explore-button:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .explore-button span {
+            position: relative; /* For text overlay */
+            z-index: 1; /* Bring text above the background */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome</h1>
+        <p>Welcome aboard! Dive into the exciting features we have for you.</p>
+    <a th:href="@{/contosphere/login}" class="explore-button"><span>Go to Login > </span></a>
+</div>
+</body>
+</html>

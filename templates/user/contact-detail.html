@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Details</title>
+  <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #121212;
+        color: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        margin: 0;
+        padding: 2em;
+        overflow-y: auto;
+    }
+
+    h2 {
+        color: #175F66;
+        margin-bottom: 1em;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        animation: slideInFromTop 1.5s ease-in-out;
+        padding-top: 1em;
+    }
+    .profile-container {
+        display: flex; /* Use flexbox to align items */
+        align-items: center; /* Center align items vertically */
+        justify-content: center; /* Center align items horizontally */
+        padding-bottom: 2em; /* Center align items vertically */
+    }
+    label {
+        margin-bottom: 0.5em;
+        font-size: 16px;
+        font-weight: 400;
+        color: #FFD700;
+    }
+
+    input, textarea {
+        padding: 12px;
+        border: 1px solid #121212;
+        border-radius: 8px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        font-size: 14px;
+        background-color: #121212;
+        color: #fff;
+        width: 100%;
+        max-width: 600px; /* Set smaller maximum width for fields */
+        cursor: not-allowed; /* Show not-allowed cursor when readonly */
+    }
+
+    input:focus, textarea:focus {
+        border-color: #175F66;
+        outline: none;
+        box-shadow: 0 0 8px #175F66;
+    }
+
+    input:hover,
+    textarea:hover,
+    input[type="file"]:hover {
+        border-color: #00FF7F; /* Change border color on hover */
+        box-shadow: 0 0 8px #00FF7F; /* Add shadow effect */
+        transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+    }
+
+    button {
+        padding: 12px;
+        background: #175F66;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+        width: 100%;
+        max-width: 180px; /* Set smaller maximum width for button */
+        margin-top: 2em; /* Margin for spacing */
+        margin-left: 16.5em;
+    }
+
+    button:hover {
+        background: #00FF7F;
+    }
+
+    /* Transparent scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        position: relative; /* Add this to position child elements */
+    }
+
+    .form-group label {
+        margin-right: 1em; /* Space between label and input */
+        flex: 0 0 120px; /* Fixed width for labels */
+    }
+
+    .pencil-icon {
+        color: #FFD700; /* Color of the pencil icon */
+        margin-left: 8px; /* Space between input and icon */
+        cursor: pointer; /* Cursor changes to pointer on hover */
+        position: absolute; /* Position the icon absolutely */
+        right: 10px; /* Position it on the right side */
+        top: 50%; /* Center it vertically */
+        transform: translateY(-50%); /* Adjust for vertical centering */
+        display: none; /* Initially hidden */
+    }
+    .pencil-icon:hover {
+    color: yellow;
+    }
+
+    .form-group:hover .pencil-icon {
+        display: block; /* Show icon on hover */
+    }
+
+    .favorite-group {
+        display: flex;
+        justify-content: center; /* Center the favorite section */
+        margin: 1.5em 0; /* Margin around favorite section */
+    }
+
+    .favorite-star {
+        color: #777777; /* Default color for the star */
+        font-size: 24px; /* Size of the star */
+        cursor: pointer;
+        transition: color 0.3s; /* Smooth transition for color change */
+    }
+
+    .favorite-star.selected {
+        color: #FFD700; /* Color when selected */
+    }
+
+    .circular-image {
+        width: 80px; /* Adjust the size as needed */
+        height: 80px; /* Adjust the size as needed */
+        border-radius: 50%; /* This makes the image circular */
+        object-fit: cover; /* This ensures the image covers the circle without distortion */
+        overflow: hidden; /* Ensures that any overflow is hidden */
+        border: 2px solid #FFD700; /* Optional: adds a border to the circle */
+        margin-right: 1.5em; /* Margin around favorite section */
+    }
+
+    .social-link-group {
+        display: flex;
+        align-items: center; /* Center align items */
+        margin-bottom: 1em; /* Space between fields */
+    }
+
+    .tick-icon {
+        color: #00FF7F; /* Color of the tick icon */
+        cursor: pointer; /* Pointer cursor for the tick icon */
+        margin-left: 8px; /* Space between input and tick icon */
+        display: none; /* Initially hidden */
+    }
+        .success-message {
+        display: none;
+        background-color: #00FF7F;
+        color: #000;
+        padding: 1em;
+        border-radius: 8px;
+        margin-top: 1em;
+        animation: fadeIn 0.5s ease-in-out, fadeOut 0.5s ease-in-out 2.5s forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+    .icon-link {
+    padding-right: 0.5em;
+    margin-left: 8px; /* Space between input and icon */
+    color: #00FF7F; /* Color for icons */
+    font-size: 20px; /* Adjust size */
+}
+    button.back-button {
+        background: #6c757d; /* Gray color */
+        margin-top: 1em; /* Space above the button */
+    }
+
+    button.back-button:hover {
+        background: #5a6268; /* Darker gray on hover */
+    }
+            .error-message {
+        display: none;
+        background-color: #ff0000;
+        color: #FFFFFF;
+        padding: 1em;
+        border-radius: 8px;
+        margin-top: 1em;
+        animation: fadeIn 0.5s ease-in-out, fadeOut 0.5s ease-in-out 2.5s forwards;
+    }
+    #errorContainer .error-message {
+    color: #FFFFFF; /* Ensure text is white */
+}
+  </style>
+</head>
+<body>
+<div>
+<span class="profile-container">
+  <img th:src="${contactForm.picture}" class="circular-image">
+  <h2 th:text="${contactForm.name}"></h2>
+</span>
+  <div class="success-message" id="successMessage">Contact updated successfully!</div>
+  <div id="errorContainer" class="error-message" style="display:none; margin-bottom: 1em;"></div>
+
+
+  <form id="contactForm" th:action="@{/user/contact/updatecontact(contactId=${contactId})}" th:object="${contactForm}" method="POST" enctype="multipart/form-data" onsubmit="showSuccessMessage(event)">
+
+  <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input th:field="*{name}" type="text" id="name" placeholder="Enter name" required readonly>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('name')"></i>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input th:field="*{email}" type="email" id="email" placeholder="Enter email" required readonly>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('email')"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="phonenumber">Phone Number</label>
+          <input th:field="*{phoneNumber}" type="tel" id="phonenumber" placeholder="Enter phone number" required readonly>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('phonenumber')"></i>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input th:field="*{address}" type="text" id="address" placeholder="Enter address" required readonly>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('address')"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="contactPicture">Picture</label>
+          <input th:field="*{contactImage}" type="file" id="contactPicture" accept="image/*">
+          <div th:if="${#fields.hasErrors('contactImage')}" class="text-danger">
+            <span th:errors="*{contactImage}"></span>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea th:field="*{description}" id="description" placeholder="Enter a brief description" rows="4" required readonly></textarea>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('description')"></i>
+        </div>
+      </div>
+    </div>
+
+
+        <div class="form-group">
+          <label for="websiteLink">Website Link :</label>
+          <a id="websiteIcon" class="icon-link" href="#" target="_blank" style="display:none;">
+            <i class="fas fa-globe"></i>
+          </a>
+          <input th:field="*{websiteLink}" type="url" id="websiteLink" placeholder="Enter website link" readonly>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('websiteLink')"></i>
+        </div>
+
+
+        <div class="form-group">
+          <label for="LinkedInLink">LinkedIn Link</label>
+          <a id="linkedinIcon" class="icon-link" href="#" target="_blank" style="display:none;">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <input th:field="*{LinkedInLink}" type="url" id="LinkedInLink" placeholder="Enter LinkedIn link" readonly>
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('LinkedInLink')"></i>
+        </div>
+
+
+    <div class="social-links">
+      <div class="form-row social-link-group">
+        <div class="col">
+          <label for="socialLink">Social Link</label>
+          <input type="url" id="socialLink" placeholder="Enter social link" />
+          <i class="fas fa-pencil-alt pencil-icon" onclick="toggleEdit('socialLink')"></i>
+          <i class="fas fa-check tick-icon" id="tickIcon" onclick="addSocialLink()"></i>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit">Save Changes</button>
+  </form>
+  <!-- Back Button -->
+  <a th:href="@{/user/contact/viewcontacts}">
+    <button type="button" class="fa-solid fa-arrow-left">>Back</button>
+  </a>
+</div>
+
+<script th:src="@{/js/contactdetails.js}"></script>
+</body>
+</html>

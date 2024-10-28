@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Contacts</title>
+    <link rel="icon" href="/images/phonescm.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            margin: 0;
+            padding: 20px;
+            color: #e0e0e0; /* Light text color */
+            height: 100vh; /* Full viewport height */
+        }
+
+        .container {
+            position: relative;
+            width: 25vw; /* Adjusted width for smaller containers */
+            height: 40vh; /* Adjusted height for smaller containers */
+            padding: 20px;
+            background: #1e1e1e; /* Darker container background */
+            border: 5px solid #47484D; /* Blue border */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex; /* Use flexbox for content alignment */
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            margin: 10px; /* Space between containers */
+            overflow: hidden; /* To hide overflow from pseudo-element */
+            transition: all 0.3s ease; /* Smooth transition for blur effect */
+            text-decoration: none; /* Remove underline from links */
+            color: inherit; /* Inherit color from parent */
+        }
+
+        .container:first-child {
+            margin-right: 100px; /* Increase the gap between the two containers */
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #2EC0E1, #1e1e1e);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            z-index: 0; /* Behind the content */
+        }
+
+        .container:hover::before {
+            transform: translateX(0); /* Fill effect on hover */
+        }
+
+        .container:hover ~ .container,
+        .container:hover ~ .container ~ .container {
+            filter: blur(5px); /* Blur effect on other containers */
+        }
+
+        h1 {
+            position: relative; /* For layering */
+            z-index: 1; /* Above the background */
+            text-align: center;
+            margin: 0; /* Remove margin */
+        }
+
+        .container:nth-child(1) h1 {
+            color: #FFD700; /* Gold for Add Contact */
+        }
+
+        .container:nth-child(2) h1 {
+            color: #00FF7F; /* Spring Green for Saved Contacts */
+        }
+
+        p {
+            color: #b0b0b0; /* Light gray text */
+            line-height: 1.5;
+            text-align: center; /* Center text */
+            position: relative; /* For layering */
+            z-index: 1; /* Above the background */
+        }
+
+        .container:hover {
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{base :: parent(~{:: #content}, ~{:: title}, ~{:: script})}">
+    <div id="content" style="display: flex; flex-direction: row; width: 100%;">
+        <a href="/user/contact/addcontactform" class="container">
+            <h1>Add Contact</h1>
+            <p>Welcome to the contact management system. Here, you can easily add and manage your contacts.</p>
+        </a>
+        <a href="/user/contact/viewcontacts" class="container">
+            <h1>Saved Contacts</h1>
+            <p>Here are your saved contacts. You can view and manage them here.</p>
+        </a>
+    </div>
+
+    <script>
+        const containers = document.querySelectorAll('.container');
+
+        containers.forEach(container => {
+            container.addEventListener('mouseover', () => {
+                containers.forEach(c => {
+                    if (c !== container) c.style.filter = 'blur(5px)';
+                });
+            });
+
+            container.addEventListener('mouseout', () => {
+                containers.forEach(c => {
+                    if (c !== container) c.style.filter = 'none';
+                });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
